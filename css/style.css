@@ -1,0 +1,17 @@
+html{height: 100%;}
+body{
+	min-height: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #022;
+}
+canvas{
+	width: 95vmin;
+	height: 95vmin;
+	background: #000;
+	filter: drop-shadow(0 0 5rem #000);
+}
