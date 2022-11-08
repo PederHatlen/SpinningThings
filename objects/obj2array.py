@@ -1,12 +1,12 @@
 vertexes = []
 faces = []
-rf = open("Benchy.obj", "r")
+rf = open("objects/nrk.obj", "r")
 
 teapot = rf.read().split("\n")
 for line in teapot:
 	lineArr = line.split(" ")
 	if len(lineArr) < 3: continue
-	# if lineArr[0] == "v": vertexes.append(list(map(float, lineArr[1:])))
+	if lineArr[0] == "v": vertexes.append(list(map(float, lineArr[1:])))
 	elif lineArr[0] == "f": faces.append(list(lineArr[1:]))
 
 # print(sum(map(float,array))/len(array))
@@ -21,8 +21,11 @@ lines = []
 
 for i in range(len(faces)):
 	for n in range(len(faces[i])):
-		# temparr = list(map(int, faces[i][n].split("//")))
-		line = [int(faces[i][n-1].split("//")[0]), int(faces[i][n].split("//")[0])]
+		# print(faces[i][n])
+		# temparr = list(map(int, faces[i][n].split("/")))
+		# for l in range(len(temparr)):
+		# line = [int(temparr[0]), int(temparr[1])]
+		line = [int(faces[i][n-1].split("/")[0]), int(faces[i][n].split("/")[0])]
 		if line not in lines: 
 			lines.append(line)
 		
@@ -39,4 +42,4 @@ for i in range(len(faces)):
 	# if line not in lines: lines.append(line)
 
 
-open("benchy_out.txt", "w").write("["+str(vertexes)+","+ str(lines)+"]")
+open("nrk_out.txt", "w").write("["+str(vertexes)+","+ str(lines)+"]")

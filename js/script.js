@@ -12,15 +12,10 @@ ctx.imageSmoothingEnabled = false;
 ctx.fillStyle = "#fff";
 ctx.font = "20px monospace";
 
-let run = true, showNumbers = false, showFPS = true;
+let run = true, showNumbers = false, showDots = false, showFPS = true;
 let pDelta, p3D, p2D, lChart, keyArr = [], clicks = 0, currentObject = 0;
 let fps = 60; // For the first frame asume 60 fps, updated every frame
 
-let objects = {
-	"cube":[0, cube, cubeLines, 256],
-	"teapot":[1, teapoints, tealines, 128],
-	"benchy":[2, benchy, benchyLines, 512]
-};
 function changeObject(obj){
 	currentObject = objects[obj][0];
 	p3D = objects[obj][1];
@@ -33,20 +28,19 @@ let perfNow = performance.now();
 
 window.addEventListener("keydown", (e)=>{
 	if("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".includes(e.key)){
-		console.log(e.key);
 		keyArr.push(e.key);
-		switch (keyArr.join("").toLowerCase()) {
-			case "cube": changeObject("cube"); keyArr = []; break;
-			case "teapot": changeObject("teapot"); keyArr = []; break;
-			case "benchy": changeObject("benchy"); keyArr = []; break;
+		let keyStr = keyArr.join("").toLowerCase()
+		if (Object.keys(objects).includes(keyStr)){
+			changeObject(keyStr);
+			keyArr = [];
 		}
 	}else if(e.key == "Backspace") keyArr.pop();
 });
 window.addEventListener("click", (e)=>{
-	if (++clicks >= 5){
+	if (clicks++ >= 4){
 		clicks = 0;
 		let tempArr = Object.keys(objects);
-		changeObject(tempArr[(currentObject+1)%tempArr.length]);
+		changeObject(tempArr[(currentObject+1)%(tempArr.length)]);
 	}
 });
 
@@ -87,12 +81,13 @@ function render(){
 	}
 
 	for(i in lChart) drawLine(ctx, p2D[lChart[i][0]-1], p2D[lChart[i][1]-1]);
+	if(showDots) for(i in p2D) ctx.fillRect(p2D[i][0]-2.5, (p2D[i][1]+2.5)*-1, 5, 5);
 
 	fps = Math.round(1/((performance.now()-perfNow)/1000));
 	if(showFPS) ctx.fillText(fps.toString(), -500, -490);
 	perfNow = performance.now();
 
-	if(run == true)	window.requestAnimationFrame(render);
+	if(run)	window.requestAnimationFrame(render);
 }
 changeObject("cube");
 render();
